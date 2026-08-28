@@ -1,0 +1,23 @@
+# 原书 PDF / 扫描件等版权材料，不入库
+*.pdf
+*.djvu
+*.epub
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# LaTeX / 构建产物
+*.aux
+*.log
+*.out
+*.synctex.gz
+_build/
+site/
+
+# 代码复现的运行产物
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
