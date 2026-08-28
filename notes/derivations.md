@@ -13,7 +13,7 @@
 - [D3. 单刚体运动方程](#d3)
 - [D4. 空间加速度与经典加速度的关系](#d4)〔待补〕
 - [D5. ABA 的递推关系](#d5)〔待补〕
-- [D6. $H$ 的稀疏性](#d6)〔待补〕
+- [D6. $H_{ij}$ 的闭式表达与稀疏性](#d6)
 
 ---
 
@@ -153,12 +153,29 @@ $$
 ---
 
 <a id="d6"></a>
-## D6. $H$ 的稀疏性〔待补〕
+## D6. $H_{ij}$ 的闭式表达与稀疏性
 
-**目标**：证明 $H_{ij}\ne0\iff i\in\nu(j)$ 或 $j\in\nu(i)$。
+**要证**：
 
-**思路提示**：$H_{ij}=\partial^2 T/\partial\dot q_i\partial\dot q_j$，
-而 $T=\sum_k\tfrac12\mathbf{v}_k^{\mathsf T}I_k\mathbf{v}_k$，
-$\mathbf{v}_k$ 只依赖 $\kappa(k)$ 上的关节速度。
+$$
+H_{ij}=\sum_{k\in\nu(i)\cap\nu(j)}\left({}^{k}X_{i}S_i\right)^{\mathsf T}I_k\left({}^{k}X_{j}S_j\right)
+$$
 
-<!-- 读第 6 章时补 -->
+由此立刻得到稀疏性，以及 $j$ 为 $i$ 的祖先时的 $H_{ij}=S_i^{\mathsf T}I^{c}_{i}\,{}^{i}X_{j}S_j$。
+
+**推导**：见 [`docs/ch06-forward-dynamics-crba.md` §二](../docs/ch06-forward-dynamics-crba.md)，
+那里有完整的五步版本。核心是三点：
+
+1. $T=\sum_k\tfrac12\mathbf{v}_k^{\mathsf T}I_k\mathbf{v}_k$，
+   $\mathbf{v}_k=\sum_{l\in\kappa(k)}{}^{k}X_{l}S_l\dot q_l$ 关于 $\dot q$ 线性；
+2. 于是 $\partial\mathbf{v}_k/\partial\dot q_i={}^{k}X_{i}S_i$（$i\in\kappa(k)$ 时）否则为零，
+   而 **$i\in\kappa(k)\iff k\in\nu(i)$**；
+3. 二阶偏导要求两个因子同时非零 ⟹ 求和范围是 $\nu(i)\cap\nu(j)$。
+
+**稀疏性**：树上 $\nu(i)\cap\nu(j)\ne\varnothing$ 当且仅当 $i,j$ 在同一条根到叶的路径上，
+即有祖先-后代关系。否则 $H_{ij}=0$。$\blacksquare$
+
+**$I^c$ 为什么取后代的**：$j$ 是祖先 ⟹ $\nu(i)\subseteq\nu(j)$ ⟹ 交集 $=\nu(i)$。
+**交集取小的，所以 $I^c$ 取后代的。**
+
+**数值验证**：[`code/verify_crba_2link.py`](../code/verify_crba_2link.py)

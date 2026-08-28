@@ -48,6 +48,8 @@
 ├── notes/                        # 个人笔记
 │   ├── questions.md              # 疑问与待办清单
 │   └── derivations.md            # 自己补的推导
+├── code/                         # 可运行的验证脚本
+│   └── verify_crba_2link.py      # 2R 机械臂：CRBA / H_ij 公式的三种数值对拍
 └── templates/
     └── chapter-note.md           # 章节笔记模板
 ```
