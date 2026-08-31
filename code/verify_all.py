@@ -135,6 +135,27 @@ check("H[3,1] = S₃ᵀ Ic₃ ³X₁ S₁（j=祖先, Ic 取后代）",
 wrong = S[1] @ Ic[1] @ np.linalg.inv(X31) @ S[3]
 print(f"     （下标写反会得到 {wrong:.6f}，真值 {H[2,0]:.6f}）")
 
+# ── 第 6 章续：LTL/LTDL 稀疏分解（表 6.3）与代价公式（式 6.26-6.29）──
+section("第 6 章  稀疏分解 LTL / LTDL")
+for name, M in MODELS:
+    n = M['NB']; q = rng.normal(size=n)
+    H = alg.crba(M, q)
+    lam = [None] + [M['parent'][i] for i in range(1, n + 1)]
+    L = alg.ltl_factor(H, lam)
+    check(f"[{name}] LTL: LᵀL = H", np.abs(L.T @ L - H).max())
+    LD = alg.ltdl_factor(H, lam)
+    D = np.diag(np.diag(LD)); Lu = np.tril(LD, -1) + np.eye(n)
+    check(f"[{name}] LTDL: LᵀDL = H", np.abs(Lu.T @ D @ Lu - H).max())
+    Hz = np.abs(np.tril(H)) > 1e-12; Lz = np.abs(L) > 1e-12
+    check(f"[{name}] 无填充：L 的非零模式 ⊆ H 的", float((Lz & ~Hz).sum()))
+    dk = [len(md.kappa(M, k)) for k in range(1, n + 1)]
+    D1 = sum(d - 1 for d in dk)
+    check(f"[{name}] 式6.26: H 的非零元数 = n + 2·D1",
+          abs(int((np.abs(H) > 1e-12).sum()) - (n + 2 * D1)))
+    qd, tau = rng.normal(size=n), rng.normal(size=n)
+    check(f"[{name}] CRBA+LTL 回代 == ABA",
+          np.abs(alg.fd_crba_sparse(M, q, qd, tau) - alg.aba(M, q, qd, tau)).max())
+
 # ── 第 7 章：ABA ─────────────────────────────────────────────────
 section("第 7 章  ABA")
 for name, M in MODELS:

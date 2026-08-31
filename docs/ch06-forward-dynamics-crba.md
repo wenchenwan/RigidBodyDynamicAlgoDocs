@@ -632,7 +632,7 @@ end                             end
 | 回代 | $2nd+2D_1(m+a)$ | $nd+2D_1(m+a)$ |
 | $Lx,\ L^{\mathsf T}x$ | $nm+D_1(m+a)$ | $D_1(m+a)$ |
 | $L^{-1}x,\ L^{-\mathsf T}x$ | $nd+D_1(m+a)$ | $D_1(m+a)$ |
-| $Hx$ | \multicolumn{2}{c}{$nm+2D_1(m+a)$} |
+| $Hx$ | $nm+2D_1(m+a)$ | $nm+2D_1(m+a)$ |
 
 其中
 
