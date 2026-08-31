@@ -1,6 +1,6 @@
 # 空间向量代数公式速查
 
-> 一页纸版本。打印出来贴在桌上的那种。
+> 一页纸版本。打印出来贴在桌上的那种。**已按原书全文核对**，附原书公式编号。
 > 详细解释见 [`docs/ch02-spatial-vector-algebra.md`](../docs/ch02-spatial-vector-algebra.md)。
 
 ## 1. 基本对象
@@ -146,10 +146,124 @@ $$
 | helical (螺距 $h$) | $[0\ 0\ 1\ 0\ 0\ h]^{\mathsf T}$ |
 | free / floating | $\mathbf{1}_6$ |
 
-## 10. 快速自查（写代码前过一遍）
+## 10. 受约束刚体（第 3 章 §3.6）
+
+$$
+\Phi=S(S^{\mathsf T}IS)^{-1}S^{\mathsf T}\ (3.54)
+\qquad
+H=S^{\mathsf T}IS\ (3.63)
+\qquad
+C=S^{\mathsf T}(I\dot S\dot q+p)\ (3.64)
+$$
+
+$\mathrm{range}(\Phi)=\mathcal S$，$\mathrm{null}(\Phi)=\mathcal S^{\perp}$，$\mathrm{rank}(\Phi)=n_f$。
+
+**约束的两种描述**（式 3.11）：
+
+|  | 位置 | 速度 | 加速度 |
+|---|---|---|---|
+| 隐式 | $\phi(q)=0$ | $K\dot q=0$ | $K\ddot q=k$ |
+| 显式 | $q=\gamma(y)$ | $\dot q=G\dot y$ | $\ddot q=G\ddot y+g$ |
+
+$KG=0$，$Kg=k$（式 3.12）；$\tau_c=K^{\mathsf T}\lambda$（3.15）；$G^{\mathsf T}\tau_c=0$（3.16）。
+
+**KKT**（式 3.17）：$\begin{bmatrix}H&K^{\mathsf T}\\ K&0\end{bmatrix}\begin{bmatrix}\ddot q\\ -\lambda\end{bmatrix}=\begin{bmatrix}\tau-C\\ k\end{bmatrix}$
+（**对称但不正定**）
+
+**投影法**（式 3.20/3.21）：$H_G\ddot y+C_G=u$，$H_G=G^{\mathsf T}HG$，$C_G=G^{\mathsf T}(C+Hg)$，$u=G^{\mathsf T}\tau$
+
+## 11. 三个惯性（第 6、7 章）
+
+| | 子树状态 | 关系式 | 参数 |
+|---|---|---|---|
+| $I$ | 只有自己 | $f=I a+v\times^{*}Iv$ | **10** |
+| $I^c$ | **焊死** | $I^c_i=I_i+\sum_{j\in\mu(i)}I^c_j$ (6.13) | 10 |
+| $I^A$ | **自由** | $f=I^Aa+p^A$ | **21** |
+
+$$
+H_{ij}=S_i^{\mathsf T}I^{c}_{i}S_j\ \ (i\in\nu(j)，\text{即 }j\text{ 是祖先})\ (6.14)
+\qquad
+\text{无分支：}H_{ij}=S_i^{\mathsf T}I^{c}_{\max(i,j)}S_j\ (6.16)
+$$
+
+$$
+I^a_j=I^A_j-U_jD_j^{-1}U_j^{\mathsf T}\ (7.47)
+\qquad
+p^a_j=p^A_j+I^a_jc_j+U_jD_j^{-1}u_j\ (7.48)
+$$
+
+$$
+U_i=I^A_iS_i,\quad D_i=S_i^{\mathsf T}U_i,\quad u_i=\tau_i-S_i^{\mathsf T}p^A_i,\quad a'_i=a_{\lambda(i)}+c_i
+$$
+
+$$
+f_j=I^A_ja_j+p^A_j=I^a_ja_{\lambda(j)}+p^a_j\ (7.25)
+\qquad
+I^A=(JH^{-1}J^{\mathsf T})^{-1}\ (7.12)=\Lambda
+$$
+
+## 12. 闭环与接触（第 8、11 章）
+
+$$
+K_{lj}=\epsilon_{lj}T_k^{\mathsf T}S_j\ (8.20)
+\qquad
+A=KH^{-1}K^{\mathsf T}\ (8.38)
+\qquad
+\text{mobility}=n-r\ (8.52)
+$$
+
+Baumgarte：$\ddot e+2\alpha\dot e+\beta^2e=\text{noise}$，$\alpha=\beta=1/T_{stab}$
+
+$$
+\zeta=n\cdot v\ (11.2)
+\qquad
+\dot\zeta=n\cdot a+\dot n\cdot v\ (11.3)
+\qquad
+\boxed{\dot\zeta\ge0,\ \lambda\ge0,\ \dot\zeta\lambda=0}\ (11.4)
+$$
+
+$$
+M=T^{\mathsf T}H^{-1}T\ (11.35)
+\qquad
+t_i=(J_{sc(i)}-J_{pc(i)})^{\mathsf T}n_i=\Big(\tfrac{\partial\phi_i}{\partial q}\Big)^{\mathsf T}
+$$
+
+$$
+\iota=I\Delta v\ (11.55)
+\qquad
+\iota=I^A\Delta v\ (11.56)
+\qquad
+u=H\Delta\dot q\ (11.57)
+$$
+
+$$
+\lambda=\frac{-(1+e)\,n\cdot(v_2-v_1)}{n\cdot(I_1^{-1}+I_2^{-1})\,n}\ (11.65)
+$$
+
+## 13. 代价与复杂度（第 10 章表 10.1）
+
+| 算法 | 乘法 | 加法 |
+|---|---|---|
+| RNEA | $93n-108$ | $81n-100$ |
+| CRBA | $10n^2+22n-32$ | $6n^2+37n-43$ |
+| F&S | $\tfrac16n^3+\tfrac32n^2-\tfrac23n$ | $\tfrac16n^3+n^2-\tfrac76n$ |
+| ABA | $224n-259$ | $205n-248$ |
+
+$$
+\boxed{\ n\le8：O(n^3)\text{ 路线更快}\qquad n\ge9：\text{ABA 更快}\ }
+$$
+
+**真实复杂度**：CRBA 是 $O(nd)$，完整 FD 是 $O(nd^2)$（$d$ = 树深度）。
+**$\kappa(H)$ 最坏 $\approx4N_B^4$** ⟹ 长链仿真要谨慎，生成树选**深度最小**的。
+
+## 14. 快速自查（写代码前过一遍）
 
 - [ ] 这个量属于 $M^6$ 还是 $F^6$？→ 决定用 $X$ 还是 $X^*$、用 $\times$ 还是 $\times^*$
 - [ ] 两个要相加的空间向量在**同一个坐标系**里吗？
 - [ ] 分量排列是 (角, 线) 吗？
 - [ ] 加速度合成项是 $\mathbf{v}_i\times\mathbf{v}_J$，且**没有 2**？
 - [ ] 重力用的是 $\mathbf{a}_0=-\mathbf{a}_g$（负号）？
+- [ ] $H_{ij}$ 的下标：**$i$ 后代、$j$ 祖先、$I^c$ 取后代**（记忆锚点：式 6.16 的 $\max$）？
+- [ ] ABA 的 $p^a$ 里用的是 $I^a$ 不是 $I^A$？
+- [ ] 闭环：没忘 $\tau^a$？鞍点矩阵没用 Cholesky？
+- [ ] 接触：$n$ 指向外侧 / 由前驱指向后继？
