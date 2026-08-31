@@ -213,3 +213,102 @@ def H_via_energy(model, q, h=1e-5):
                        - kinetic_energy(model, q, -ea + eb)
                        + kinetic_energy(model, q, -ea - eb)) / (4 * h * h)
     return H
+
+
+# ─────────────── 分支诱导稀疏的因子分解（第 6 章表 6.3/6.5） ───────────────
+
+def expanded_parent(model):
+    """展开的父数组 λ'（原书表 6.4）。多自由度关节被展开成单自由度关节链。
+
+    对全 1-DoF 系统，λ' 就是 λ。
+    """
+    NB = model['NB']
+    nf = model.get('ndof', [None] + [1] * NB)          # 各关节自由度
+    n = sum(nf[1:])
+    lam2 = list(range(-1, n))                          # λ'(i) = i-1（1-based 下）
+    lam2 = [None] + [i - 1 for i in range(1, n + 1)]
+    mp = [0] * (NB + 1)
+    for i in range(1, NB + 1):
+        mp[i] = mp[i - 1] + nf[i]
+    for i in range(1, NB + 1):
+        lam2[mp[i - 1] + 1] = mp[model['parent'][i]]
+    return lam2
+
+
+def ltl_factor(H, lam):
+    """稀疏 L^T L 分解（原书表 6.3 左）。就地进行，只用下三角。
+
+    lam 是 1-based 的父数组，lam[i] < i，lam[i]==0 表示到根。
+    返回下三角的 L（存放在 H 的下三角中）。
+    """
+    H = np.array(H, dtype=float, copy=True)
+    n = H.shape[0]
+    for k in range(n, 0, -1):
+        H[k-1, k-1] = np.sqrt(H[k-1, k-1])
+        i = lam[k]
+        while i != 0:
+            H[k-1, i-1] = H[k-1, i-1] / H[k-1, k-1]
+            i = lam[i]
+        i = lam[k]
+        while i != 0:
+            j = i
+            while j != 0:
+                H[i-1, j-1] = H[i-1, j-1] - H[k-1, i-1] * H[k-1, j-1]
+                j = lam[j]
+            i = lam[i]
+    return np.tril(H)
+
+
+def ltdl_factor(H, lam):
+    """稀疏 L^T D L 分解（原书表 6.3 右）。D 在对角线上，L 的非对角元在其下方。"""
+    H = np.array(H, dtype=float, copy=True)
+    n = H.shape[0]
+    for k in range(n, 0, -1):
+        i = lam[k]
+        while i != 0:
+            a = H[k-1, i-1] / H[k-1, k-1]
+            j = i
+            while j != 0:
+                H[i-1, j-1] = H[i-1, j-1] - a * H[k-1, j-1]
+                j = lam[j]
+            H[k-1, i-1] = a
+            i = lam[i]
+    return np.tril(H)
+
+
+def sparse_solve_L(L, x, lam, unit=False):
+    """就地求解 L y = x（原书表 6.5 的 x = L⁻¹x）。"""
+    x = np.array(x, dtype=float, copy=True)
+    n = len(x)
+    for i in range(1, n + 1):
+        j = lam[i]
+        while j != 0:
+            x[i-1] -= L[i-1, j-1] * x[j-1]
+            j = lam[j]
+        if not unit:
+            x[i-1] /= L[i-1, i-1]
+    return x
+
+
+def sparse_solve_LT(L, x, lam, unit=False):
+    """就地求解 Lᵀ y = x（原书表 6.5 的 x = L⁻ᵀx）。"""
+    x = np.array(x, dtype=float, copy=True)
+    n = len(x)
+    for i in range(n, 0, -1):
+        if not unit:
+            x[i-1] /= L[i-1, i-1]
+        j = lam[i]
+        while j != 0:
+            x[j-1] -= L[i-1, j-1] * x[i-1]
+            j = lam[j]
+    return x
+
+
+def fd_crba_sparse(model, q, qd, tau):
+    """FD 的稀疏路线：CRBA + LTL 分解 + 两次回代（第 6 章的完整流程）。"""
+    H = crba(model, q)
+    C = bias_force(model, q, qd)
+    lam = [None] + [model['parent'][i] for i in range(1, model['NB'] + 1)]
+    L = ltl_factor(H, lam)
+    y = sparse_solve_LT(L, tau - C, lam)     # Lᵀ y = τ − C
+    return sparse_solve_L(L, y, lam)         # L q̈ = y
