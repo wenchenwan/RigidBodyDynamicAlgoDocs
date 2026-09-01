@@ -205,9 +205,9 @@ $$
 设 $J$ 是把 $\dot q$ 映到柄的空间速度的雅可比（$v=J\dot q$），则
 
 $$
-\tau=J^{\mathsf T}f\tag{7.6}
+\tau=J^{\mathsf T}f
 \qquad\qquad
-a=J\ddot q+\dot J\dot q\tag{7.7}
+a=J\ddot q+\dot J\dot q\tag{7.6, 7.7}
 $$
 
 联立得
@@ -217,17 +217,17 @@ a=JH^{-1}(J^{\mathsf T}f-C)+\dot J\dot q=\Phi^Af+b^A\tag{7.8}
 $$
 
 $$
-\boxed{\ \Phi^A=JH^{-1}J^{\mathsf T}\ }\tag{7.9}
+\boxed{\ \Phi^A=JH^{-1}J^{\mathsf T}\ }
 \qquad
-b^A=\dot J\dot q-JH^{-1}C\tag{7.10}
+b^A=\dot J\dot q-JH^{-1}C\tag{7.9, 7.10}
 $$
 
 柄有完整 6 自由度时：
 
 $$
-\boxed{\ I^A=(JH^{-1}J^{\mathsf T})^{-1}\ }\tag{7.12}
+\boxed{\ I^A=(JH^{-1}J^{\mathsf T})^{-1}\ }
 \qquad
-p^A=-I^Ab^A\tag{7.13}
+p^A=-I^Ab^A\tag{7.12, 7.13}
 $$
 
 > 🔑 **式 7.12 就是操作空间惯性矩阵 $\Lambda$！**
@@ -313,9 +313,9 @@ $$
 定义 $A_1\cdots A_{N_B}$，其中 $A_i$ 含以 body $i$ 为根的子树、$i$ 为柄。则
 
 $$
-I^A_i=I_i+\sum_{j\in\mu(i)}I^a_j\tag{7.21}
+I^A_i=I_i+\sum_{j\in\mu(i)}I^a_j
 \qquad\qquad
-p^A_i=p_i+\sum_{j\in\mu(i)}p^a_j\tag{7.22}
+p^A_i=p_i+\sum_{j\in\mu(i)}p^a_j\tag{7.21, 7.22}
 $$
 
 $$
@@ -381,9 +381,9 @@ f_1=I^A_1a_1+p^A_1\tag{7.26}
 $$
 
 $$
-a_1=a_0+c_1+S_1\ddot q_1\tag{7.27}
+a_1=a_0+c_1+S_1\ddot q_1
 \qquad\qquad
-S_1^{\mathsf T}f_1=\tau_1\tag{7.28}
+S_1^{\mathsf T}f_1=\tau_1\tag{7.27, 7.28}
 $$
 
 三式联立解出
@@ -453,13 +453,13 @@ $$
 原书指出式 7.39–7.42 有大量公共子表达式，定义中间量：
 
 $$
-U_i=I^A_iS_i\tag{7.43}
+U_i=I^A_iS_i
 \qquad
-D_i=S_i^{\mathsf T}U_i\tag{7.44}
+D_i=S_i^{\mathsf T}U_i
 \qquad
-u_i=\tau_i-S_i^{\mathsf T}p^A_i\tag{7.45}
+u_i=\tau_i-S_i^{\mathsf T}p^A_i
 \qquad
-a'_i=a_{\lambda(i)}+c_i\tag{7.46}
+a'_i=a_{\lambda(i)}+c_i\tag{7.43, 7.44, 7.45, 7.46}
 $$
 
 于是化简为
@@ -479,42 +479,42 @@ $$
 ### ⭐ 表 7.1：完整伪代码（原书）
 
 ```
-────────────────────────────────────────────────────────────────
-# ═══ 趟 1：外推 ═══
-v₀ = 0
+----------------------------------------------------------------
+# === 趟 1：外推 ===
+v_0 = 0
 for i = 1 to N_B do
-    [X_J, S_i, vJ, cJ] = jcalc(jtype(i), q_i, q̇_i)
-    ⁱX_λ(i) = X_J · X_T(i)
-    if λ(i) ≠ 0 then
-        ⁱX₀ = ⁱX_λ(i) · λ⁽ⁱ⁾X₀
+    [X_J, S_i, vJ, cJ] = jcalc(jtype(i), q_i, qd_i)
+    X[i,lam(i)] = X_J * X_T(i)
+    if lam(i) != 0 then
+        X[i,0] = X[i,lam(i)] * X[lam(i),0]
     end
-    v_i   = ⁱX_λ(i) · v_λ(i) + vJ
-    c_i   = cJ + v_i × vJ
+    v_i   = X[i,lam(i)] * v_lam(i) + vJ
+    c_i   = cJ + v_i x vJ
     I^A_i = I_i
-    p^A_i = v_i ×* I_i · v_i − ⁱX₀* · f^x_i
+    p^A_i = v_i x* I_i * v_i - X[i,0]^* f^x_i
 end
 
-# ═══ 趟 2：内推 ═══
+# === 趟 2：内推 ===
 for i = N_B to 1 do
-    U_i = I^A_i · S_i
-    D_i = S_iᵀ · U_i
-    u_i = τ_i − S_iᵀ · p^A_i
-    if λ(i) ≠ 0 then
-        I^a = I^A_i − U_i·D_i⁻¹·U_iᵀ
-        p^a = p^A_i + I^a·c_i + U_i·D_i⁻¹·u_i
-        I^A_λ(i) = I^A_λ(i) + λ⁽ⁱ⁾X_i* · I^a · ⁱX_λ(i)
-        p^A_λ(i) = p^A_λ(i) + λ⁽ⁱ⁾X_i* · p^a
+    U_i = I^A_i * S_i
+    D_i = S_i^T * U_i
+    u_i = tau_i - S_i^T * p^A_i
+    if lam(i) != 0 then
+        I^a = I^A_i - U_i*D_i^-1*U_i^T
+        p^a = p^A_i + I^a*c_i + U_i*D_i^-1*u_i
+        I^A_lam(i) = I^A_lam(i) + X[lam(i),i]^* I^a * X[i,lam(i)]
+        p^A_lam(i) = p^A_lam(i) + X[lam(i),i]^* p^a
     end
 end
 
-# ═══ 趟 3：外推 ═══
-a₀ = −a_g
+# === 趟 3：外推 ===
+a_0 = -a_g
 for i = 1 to N_B do
-    a' = ⁱX_λ(i) · a_λ(i) + c_i
-    q̈_i = D_i⁻¹ · (u_i − U_iᵀ · a')
-    a_i = a' + S_i · q̈_i
+    a' = X[i,lam(i)] * a_lam(i) + c_i
+    qdd_i = D_i^-1 * (u_i - U_i^T * a')
+    a_i = a' + S_i * qdd_i
 end
-────────────────────────────────────────────────────────────────
+----------------------------------------------------------------
 ```
 
 **原书对伪代码的说明**：
@@ -668,9 +668,9 @@ $$
 **装配约束**：
 
 $$
-T^{\mathsf T}(a_3-a_2)=T^{\mathsf T}c\tag{7.60}
+T^{\mathsf T}(a_3-a_2)=T^{\mathsf T}c
 \qquad\qquad
-f_3=T\lambda=-f_2\tag{7.61}
+f_3=T\lambda=-f_2\tag{7.60, 7.61}
 $$
 
 ⚠️ **式 7.61 的一个建模约定**：假定关节上的主动力**已经计入**式 7.57、7.58 的偏置加速度——

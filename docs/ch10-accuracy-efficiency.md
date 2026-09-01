@@ -309,9 +309,9 @@ $$
 **一般树上的 CRBA 代价**：
 
 $$
-D_0=n-|\mu(0)|\tag{10.4}
+D_0=n-|\mu(0)|
 \qquad\qquad
-D_1=\sum_{i=1}^{n}(|\kappa(i)|-1)\tag{10.5}
+D_1=\sum_{i=1}^{n}(|\kappa(i)|-1)\tag{10.4, 10.5}
 $$
 
 $$
@@ -321,11 +321,11 @@ $$
 **界**：
 
 $$
-0\le D_0\le n-1\tag{10.7}
+0\le D_0\le n-1
 \qquad
-0\le D_1\le \frac{n(n-1)}{2}\tag{10.8}
+0\le D_1\le \frac{n(n-1)}{2}
 \qquad
-0\le D_1\le n(d-1)\tag{10.9}
+0\le D_1\le n(d-1)\tag{10.7, 10.8, 10.9}
 $$
 
 > 💡 **下界的取到条件很有意思**：*"Both quantities reach their lower limit in a system

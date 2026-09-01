@@ -98,9 +98,9 @@ $$
 ### 合并成鞍点方程
 
 $$
-\tau^{c}=K^{\mathsf T}\lambda\tag{8.5}
+\tau^{c}=K^{\mathsf T}\lambda
 \qquad\qquad
-K\ddot q=k\tag{8.4}
+K\ddot q=k\tag{8.5, 8.4}
 $$
 
 $$
@@ -131,9 +131,9 @@ $$
 约束（**为简单起见假定所有闭环关节的偏置速度 $\sigma_k=0$**）：
 
 $$
-T_k^{\mathsf T}v_{Jk}=0\tag{8.8}
+T_k^{\mathsf T}v_{Jk}=0
 \quad\Longrightarrow\quad
-T_k^{\mathsf T}(v_{s(k)}-v_{p(k)})=0\tag{8.9}
+T_k^{\mathsf T}(v_{s(k)}-v_{p(k)})=0\tag{8.8, 8.9}
 $$
 
 求导得加速度约束：
@@ -278,9 +278,9 @@ $X_J$ **精确满足**关节约束，$X_{err}$ 表示（假定很小的）**约�
 由于 $X_{err}$ 表示小位移，存在运动向量 $d\in M^6$ 使
 
 $$
-\mathbf 1-d\times\simeq X_{err}\tag{8.26}
+\mathbf 1-d\times\simeq X_{err}
 \qquad\qquad
-\delta=T^{\mathsf T}d\tag{8.27}
+\delta=T^{\mathsf T}d\tag{8.26, 8.27}
 $$
 
 > **$d$ 是"后继坐标系应该在的位置"到"它实际在的位置"的（近似）位移。**
@@ -309,9 +309,9 @@ $$
 分解成主动力与约束力：
 
 $$
-\tau^{a}=\sum_{l=1}^{N_L}J_{Ll}^{\mathsf T}f^a_k\tag{8.28}
+\tau^{a}=\sum_{l=1}^{N_L}J_{Ll}^{\mathsf T}f^a_k
 \qquad
-\tau^{c}=\sum_{l=1}^{N_L}J_{Ll}^{\mathsf T}f^c_k\tag{8.29}
+\tau^{c}=\sum_{l=1}^{N_L}J_{Ll}^{\mathsf T}f^c_k\tag{8.28, 8.29}
 $$
 
 用 $f^c_k=T_k\lambda_k$（8.30）代入并与式 8.17 的 $K$ 对比，即得 $\tau^{c}=K^{\mathsf T}\lambda$（8.32）。
@@ -326,9 +326,9 @@ $$
 ## 8.5 求解运动方程：三种方法
 
 $$
-H\ddot q+C=\tau+K^{\mathsf T}\lambda+\tau^{a}\tag{8.34}
+H\ddot q+C=\tau+K^{\mathsf T}\lambda+\tau^{a}
 \qquad
-K\ddot q=k+k_{stab}\tag{8.35}
+K\ddot q=k+k_{stab}\tag{8.34, 8.35}
 $$
 
 $$
@@ -362,11 +362,11 @@ $$
 用 $KH^{-1}$ 乘第一行减去第二行：
 
 $$
-A\lambda=b\tag{8.37}
+A\lambda=b
 \qquad
-\boxed{A=KH^{-1}K^{\mathsf T}}\tag{8.38}
+\boxed{A=KH^{-1}K^{\mathsf T}}
 \qquad
-b=k+k_{stab}-KH^{-1}(\tau-C+\tau^{a})\tag{8.39}
+b=k+k_{stab}-KH^{-1}(\tau-C+\tau^{a})\tag{8.37, 8.38, 8.39}
 $$
 
 $A$：$n_c\times n_c$，**对称半正定**，秩 $=r$。
@@ -381,12 +381,12 @@ $A$：$n_c\times n_c$，**对称半正定**，秩 $=r$。
 **⭐ 原书给的高效计算流程**（用第 6 章的 $LTL$ 分解，因而**利用了 $H$ 的分支稀疏性**）：
 
 ```
-1. 分解 H = LᵀL
-2. τ' = τ − C + τ^a
-3. 回代算 Y = L⁻ᵀKᵀ  和  z = L⁻ᵀτ'
-4. A = YᵀY,  b = k + k_stab − Yᵀz
-5. 解 Aλ = b
-6. 用步骤 1 的因子解 H q̈ = τ' + Kᵀλ
+1. 分解 H = L^T L
+2. tau' = tau - C + tau^a
+3. 回代算 Y = L^-T K^T  和  z = L^-T tau'
+4. A = Y^T Y,  b = k + k_stab - Y^T z
+5. 解 A lam = b
+6. 用步骤 1 的因子解 H qdd = tau' + K^T lam
 ```
 
 > 💡 **注意第 3、4 步的技巧**：$A=KH^{-1}K^{\mathsf T}=(L^{-\mathsf T}K^{\mathsf T})^{\mathsf T}(L^{-\mathsf T}K^{\mathsf T})=Y^{\mathsf T}Y$。
@@ -395,11 +395,11 @@ $A$：$n_c\times n_c$，**对称半正定**，秩 $=r$。
 ### 方法 3：先解式 8.35（独立坐标法）
 
 $$
-\ddot q=G\ddot y+g\tag{8.42}
+\ddot q=G\ddot y+g
 \qquad
-KG=0\tag{8.43}
+KG=0
 \qquad
-Kg=k+k_{stab}\tag{8.44}
+Kg=k+k_{stab}\tag{8.42, 8.43, 8.44}
 $$
 
 $\ddot y$ 是 $(n-r)$ 维**独立加速度变量**向量（**通常取 $\ddot q$ 元素的一个子集**）。
@@ -474,9 +474,9 @@ $$
 **恰约束 (properly constrained)**：$r=n_c$ 的系统。此时
 
 $$
-\text{mobility}=n_{tot}-6N_L\ \ (\text{3D})\tag{8.53}
+\text{mobility}=n_{tot}-6N_L\ \ (\text{3D})
 \qquad
-\text{mobility}=n_{tot}-3N_L\ \ (\text{2D})\tag{8.54}
+\text{mobility}=n_{tot}-3N_L\ \ (\text{2D})\tag{8.53, 8.54}
 $$
 
 其中 $n_{tot}$ = **所有**关节（不只是树关节）的自由度之和。
@@ -552,11 +552,11 @@ $n=3$、$n_c=5$，但自由度是 1 ⟹ $r=2$，所以 $n_c-r=3$ 个冗余约束
 假定 $y\in C$ 时 $y$ 唯一确定 $q$。则存在函数 $\gamma$：
 
 $$
-q=\gamma(y)\tag{8.56}
+q=\gamma(y)
 \qquad
-\dot q=G\dot y,\ G=\frac{\partial\gamma}{\partial y}\tag{8.57, 8.58}
+\dot q=G\dot y,\ G=\frac{\partial\gamma}{\partial y}
 \qquad
-\ddot q=G\ddot y+g,\ g=\dot G\dot y\tag{8.59, 8.60}
+\ddot q=G\ddot y+g,\ g=\dot G\dot y\tag{8.56, 8.57, 8.58, 8.59, 8.60}
 $$
 
 **四步方法**：定义 $y$ 与 $C$ → 求 $\gamma$ 的表达式 → **符号求导**得 $G$、$g$ → 写代码。

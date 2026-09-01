@@ -117,9 +117,9 @@ $$
 $$
 
 $$
-M=n\cdot I^{-1}n\tag{11.8}
+M=n\cdot I^{-1}n
 \qquad
-d=n\cdot I^{-1}(f-v\times^{*}Iv)+\dot n\cdot v\tag{11.9}
+d=n\cdot I^{-1}(f-v\times^{*}Iv)+\dot n\cdot v\tag{11.8, 11.9}
 $$
 
 $$
@@ -157,11 +157,11 @@ $$
 $n_c$ 个接触，各有接触点 $C_i$ 与法向 $n_i$。
 
 $$
-f_c=\sum_{i=1}^{n_c}n_i\lambda_i\tag{11.11}
+f_c=\sum_{i=1}^{n_c}n_i\lambda_i
 \qquad
-\zeta_i=n_i\cdot v\tag{11.12}
+\zeta_i=n_i\cdot v
 \qquad
-\dot\zeta_i=n_i\cdot a+\dot n_i\cdot v\tag{11.13}
+\dot\zeta_i=n_i\cdot a+\dot n_i\cdot v\tag{11.11, 11.12, 11.13}
 $$
 
 > 💡 **原书特别提醒**：*"Observe that **each contact has its own separation velocity**,
@@ -175,9 +175,9 @@ $$
 **矩阵形式**：$N=[n_1\ \cdots\ n_{n_c}]$（$6\times n_c$），
 
 $$
-f_c=N\lambda\tag{11.16}
+f_c=N\lambda
 \qquad
-\dot\zeta=N^{\mathsf T}a+\dot N^{\mathsf T}v\tag{11.17}
+\dot\zeta=N^{\mathsf T}a+\dot N^{\mathsf T}v\tag{11.16, 11.17}
 $$
 
 $$
@@ -185,9 +185,9 @@ $$
 $$
 
 $$
-\dot\zeta=M\lambda+d\tag{11.20}
+\dot\zeta=M\lambda+d
 \qquad
-M=N^{\mathsf T}I^{-1}N\tag{11.21}
+M=N^{\mathsf T}I^{-1}N\tag{11.20, 11.21}
 $$
 
 ### ⚠️ 解的存在性与唯一性
@@ -254,19 +254,19 @@ $$
 于是一切都变得和 §11.2 平行：
 
 $$
-\tau^c=T\lambda\tag{11.32}
+\tau^c=T\lambda
 \qquad
-\zeta_i=t_i^{\mathsf T}\dot q\tag{11.28}
+\zeta_i=t_i^{\mathsf T}\dot q
 \qquad
-\dot\zeta=T^{\mathsf T}\ddot q+\dot T^{\mathsf T}\dot q\tag{11.33}
+\dot\zeta=T^{\mathsf T}\ddot q+\dot T^{\mathsf T}\dot q\tag{11.32, 11.28, 11.33}
 $$
 
 $$
-\dot\zeta=M\lambda+d\tag{11.34}
+\dot\zeta=M\lambda+d
 \qquad
-\boxed{M=T^{\mathsf T}H^{-1}T}\tag{11.35}
+\boxed{M=T^{\mathsf T}H^{-1}T}
 \qquad
-d=T^{\mathsf T}H^{-1}(\tau-C)+\dot T^{\mathsf T}\dot q\tag{11.36}
+d=T^{\mathsf T}H^{-1}(\tau-C)+\dot T^{\mathsf T}\dot q\tag{11.34, 11.35, 11.36}
 $$
 
 $\dot T^{\mathsf T}\dot q$ 由**速度乘积加速度** $a^{vp}$（第 8 章的副产品）算出：
@@ -321,11 +321,11 @@ $$
 对 $\phi(q)$ 求导：
 
 $$
-\dot\phi=t^{\mathsf T}\dot q\tag{11.38}
+\dot\phi=t^{\mathsf T}\dot q
 \qquad
-\ddot\phi=t^{\mathsf T}\ddot q+\dot t^{\mathsf T}\dot q\tag{11.39}
+\ddot\phi=t^{\mathsf T}\ddot q+\dot t^{\mathsf T}\dot q
 \qquad
-t^{\mathsf T}=\frac{\partial\phi}{\partial q}\tag{11.40}
+t^{\mathsf T}=\frac{\partial\phi}{\partial q}\tag{11.38, 11.39, 11.40}
 $$
 
 > 🔑 **对照式 11.28、11.29 可见**：
@@ -538,9 +538,9 @@ $$
 $$
 
 $$
-u=J_i^{\mathsf T}\iota\tag{11.58}
+u=J_i^{\mathsf T}\iota
 \qquad
-\Delta v_i=J_i\,\Delta\dot q\tag{11.59}
+\Delta v_i=J_i\,\Delta\dot q\tag{11.58, 11.59}
 $$
 
 > 🔑 **式 11.56 很值得注意**：**铰接体惯性 $I^A$ 也满足冲量方程**。
@@ -566,15 +566,15 @@ $I^{-1}$ 能提到积分号外，因为 $I$ 只随位置变化而位置是时间
 ### 两体碰撞
 
 $$
-\Delta v_1=-I_1^{-1}n\lambda\tag{11.60}
+\Delta v_1=-I_1^{-1}n\lambda
 \qquad
-\Delta v_2=I_2^{-1}n\lambda\tag{11.61}
+\Delta v_2=I_2^{-1}n\lambda\tag{11.60, 11.61}
 $$
 
 $$
-\zeta=n\cdot(v_2-v_1)\tag{11.62}
+\zeta=n\cdot(v_2-v_1)
 \qquad
-\Delta\zeta=n\cdot(\Delta v_2-\Delta v_1)\tag{11.63}
+\Delta\zeta=n\cdot(\Delta v_2-\Delta v_1)\tag{11.62, 11.63}
 $$
 
 必须满足 $\zeta\le0$ 且 $\zeta+\Delta\zeta\ge0$。**还差一个方程**——由**恢复系数** $e\in[0,1]$ 提供：

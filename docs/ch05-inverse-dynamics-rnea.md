@@ -288,9 +288,9 @@ $$
 **重力补偿的精简版**（原书式 5.12、5.13）：
 
 $$
-f_i=-I_ia_g+\sum_{j\in\mu(i)}f_j\tag{5.12}
+f_i=-I_ia_g+\sum_{j\in\mu(i)}f_j
 \qquad\qquad
-\tau_i=S_i^{\mathsf T}f_i\tag{5.13}
+\tau_i=S_i^{\mathsf T}f_i\tag{5.12, 5.13}
 $$
 
 > 💡 要算**真实的重力项**（而非补偿项），把 $-I_ia_g$ 换成 $+I_ia_g$。
@@ -322,9 +322,9 @@ $$
 利用 `jcalc` 提供的量：
 
 $$
-v_{Ji}=S_i\dot q_i\tag{5.16}
+v_{Ji}=S_i\dot q_i
 \qquad
-c_{Ji}=\mathring S_i\dot q_i\tag{5.17}
+c_{Ji}=\mathring S_i\dot q_i\tag{5.16, 5.17}
 $$
 
 $$
@@ -345,28 +345,28 @@ $$
 ### ⭐ 表 5.1：完整伪代码（原书）
 
 ```
-────────────────────────────────────────────────────────────────
-v₀ = 0
-a₀ = −a_g
+----------------------------------------------------------------
+v_0 = 0
+a_0 = -a_g
 
 for i = 1 to N_B do
-    [X_J, S_i, vJ, cJ] = jcalc(jtype(i), q_i, q̇_i)
-    ⁱX_λ(i) = X_J · X_T(i)
-    if λ(i) ≠ 0 then
-        ⁱX₀ = ⁱX_λ(i) · λ⁽ⁱ⁾X₀
+    [X_J, S_i, vJ, cJ] = jcalc(jtype(i), q_i, qd_i)
+    X[i,lam(i)] = X_J * X_T(i)
+    if lam(i) != 0 then
+        X[i,0] = X[i,lam(i)] * X[lam(i),0]
     end
-    v_i = ⁱX_λ(i) · v_λ(i) + vJ
-    a_i = ⁱX_λ(i) · a_λ(i) + S_i·q̈_i + cJ + v_i × vJ
-    f_i = I_i·a_i + v_i ×* I_i·v_i − ⁱX₀* · f^x_i
+    v_i = X[i,lam(i)] * v_lam(i) + vJ
+    a_i = X[i,lam(i)] * a_lam(i) + S_i*qdd_i + cJ + v_i x vJ
+    f_i = I_i*a_i + v_i x* I_i*v_i - X[i,0]^* f^x_i
 end
 
 for i = N_B to 1 do
-    τ_i = S_iᵀ · f_i
-    if λ(i) ≠ 0 then
-        f_λ(i) = f_λ(i) + λ⁽ⁱ⁾X_i* · f_i
+    tau_i = S_i^T * f_i
+    if lam(i) != 0 then
+        f_lam(i) = f_lam(i) + X[lam(i),i]^* f_i
     end
 end
-────────────────────────────────────────────────────────────────
+----------------------------------------------------------------
 ```
 
 **原书对伪代码的四点说明**：
@@ -385,9 +385,9 @@ end
 
 ```
 for i = N_B to 1 do
-    f_i = f^B_i − ⁱX₀* f^x_i
-    for each j in μ(i) do
-        f_i = f_i + ⁱX_j* f_j
+    f_i = f^B_i - X[i,0]^* f^x_i
+    for each j in mu(i) do
+        f_i = f_i + X[i,j]^* f_j
     end
 end
 ```
@@ -396,11 +396,11 @@ end
 
 ```
 for i = 1 to N_B do
-    f_i = f^B_i − ⁱX₀* f^x_i            ← 并入第一趟循环的最后一行
+    f_i = f^B_i - X[i,0]^* f^x_i                   <- 并入第一趟循环的最后一行
 end
 for i = N_B to 1 do
-    if λ(i) ≠ 0 then
-        f_λ(i) = f_λ(i) + λ⁽ⁱ⁾X_i* f_i   ← 「累加到父节点」
+    if lam(i) != 0 then
+        f_lam(i) = f_lam(i) + X[lam(i),i]^* f_i    <- 「累加到父节点」
     end
 end
 ```

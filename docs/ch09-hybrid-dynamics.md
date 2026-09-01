@@ -130,9 +130,9 @@ $$
 即**被至少一个正动力学关节支撑的刚体集合**。它可以由 $fd$ 和 $\lambda$ 算出：
 
 ```
-ν(fd) = fd
+nu(fd) = fd
 for i = 1 to N_B do
-    if λ(i) ∈ ν(fd) then  ν(fd) = ν(fd) ∪ {i}
+    if lam(i) in nu(fd) then  nu(fd) = nu(fd) union {i}
 end
 ```
 
@@ -163,12 +163,12 @@ $$
 ```
 map(0) = 0 ;  j = 1
 for i = 1 to n do
-    if i ∈ fd then
+    if i in fd then
         map(i) = j
-        λ'(j)  = map(λ(i))
+        lam'(j)  = map(lam(i))
         j = j + 1
     else
-        map(i) = map(λ(i))
+        map(i) = map(lam(i))
     end
 end
 ```
@@ -189,11 +189,11 @@ end
 ### 推导
 
 $$
-f_i=I^A_ia_i+p^A_i\tag{9.6}
+f_i=I^A_ia_i+p^A_i
 \qquad
-f_i=I^a_ia_{\lambda(i)}+p^a_i\tag{9.7}
+f_i=I^a_ia_{\lambda(i)}+p^a_i
 \qquad
-a_i=a_{\lambda(i)}+\dot S_i\dot q_i+S_i\ddot q_i\tag{9.8}
+a_i=a_{\lambda(i)}+\dot S_i\dot q_i+S_i\ddot q_i\tag{9.6, 9.7, 9.8}
 $$
 
 > **ABA 的主要步骤是由 $I^A_i,p^A_i$ 算出 $I^a_i,p^a_i$。
@@ -203,9 +203,9 @@ $$
 把 9.8 代入 9.6 并与 9.7 比较，立刻得到
 
 $$
-\boxed{\ I^a_i=I^A_i\ }\tag{9.9}
+\boxed{\ I^a_i=I^A_i\ }
 \qquad\qquad
-\boxed{\ p^a_i=p^A_i+I^A_i(\dot S_i\dot q_i+S_i\ddot q_i)\ }\tag{9.10}
+\boxed{\ p^a_i=p^A_i+I^A_i(\dot S_i\dot q_i+S_i\ddot q_i)\ }\tag{9.9, 9.10}
 $$
 
 > 🔑 **对比 FD 关节的式 7.47、7.48**：
@@ -229,21 +229,21 @@ $$
 
 ```
 趟 1: 对每个 i
-        v_i = ⁱX_λ v_λ + vJ
-        if i ∈ fd: c_i = cJ + v_i × vJ
-        else:      c_i = cJ + v_i × vJ + S_i q̈_i      ← 差别在这
-        I^A_i = I_i ;  p^A_i = v_i ×* I_i v_i − ⁱX₀* f^x_i
+        v_i = X[i,lam] v_lam + vJ
+        if i in fd: c_i = cJ + v_i x vJ
+        else:       c_i = cJ + v_i x vJ + S_i qdd_i     <- 差别在这
+        I^A_i = I_i ;  p^A_i = v_i x* I_i v_i - X[i,0]^* f^x_i
 
 趟 2: for i = N_B to 1
-        if i ∈ fd:                                    ← 消元
-            U_i, D_i, u_i ;  I^a = I^A_i − U D⁻¹ Uᵀ ; p^a = p^A_i + I^a c_i + U D⁻¹ u
-        else:                                          ← 代入
-            I^a = I^A_i ;                              p^a = p^A_i + I^a c_i
+        if i in fd:                                     <- 消元
+            U_i, D_i, u_i ;  I^a = I^A_i - U D^-1 U^T ; p^a = p^A_i + I^a c_i + U D^-1 u
+        else:                                           <- 代入
+            I^a = I^A_i ;                               p^a = p^A_i + I^a c_i
         累加 I^a, p^a 到父节点
 
 趟 3: for i = 1 to N_B
-        if i ∈ fd:  a' = ⁱX_λ a_λ + c_i ; q̈_i = D⁻¹(u_i − Uᵀa') ; a_i = a' + S_i q̈_i
-        else:       a_i = ⁱX_λ a_λ + c_i ; τ_i = S_iᵀ(I^A_i a_i + p^A_i)
+        if i in fd:  a' = X[i,lam] a_lam + c_i ; qdd_i = D^-1 (u_i - U^T a') ; a_i = a' + S_i qdd_i
+        else:        a_i = X[i,lam] a_lam + c_i ; tau_i = S_i^T (I^A_i a_i + p^A_i)
 ```
 
 ---
@@ -324,9 +324,9 @@ H^{fl}\ddot q+C^{fl}=\tau\tag{9.14}
 $$
 
 $$
-H^{fl}=H-F^{\mathsf T}(I^c_0)^{-1}F\tag{9.15}
+H^{fl}=H-F^{\mathsf T}(I^c_0)^{-1}F
 \qquad
-C^{fl}=C-F^{\mathsf T}(I^c_0)^{-1}p^c_0\tag{9.16}
+C^{fl}=C-F^{\mathsf T}(I^c_0)^{-1}p^c_0\tag{9.15, 9.16}
 $$
 
 > ⚠️ **原书的警告**：
@@ -381,9 +381,9 @@ $$
 $a_0$ 的系数正是复合刚体惯性 $I^c_i$，其余当作偏置力：
 
 $$
-f_i=I^c_ia_0+p^c_i\tag{9.20}
+f_i=I^c_ia_0+p^c_i
 \qquad
-p^c_i=\sum_{j\in\nu(i)}\big(I_ja^r_j+v_j\times^{*}I_jv_j-f^x_j\big)\tag{9.21}
+p^c_i=\sum_{j\in\nu(i)}\big(I_ja^r_j+v_j\times^{*}I_jv_j-f^x_j\big)\tag{9.20, 9.21}
 $$
 
 > **$p^c_i$ 的含义**：*"the force that would be required to support the motion of
@@ -392,9 +392,9 @@ $$
 递推形式：
 
 $$
-p^c_i=p_i+\sum_{j\in\mu(i)}p^c_j\tag{9.22}
+p^c_i=p_i+\sum_{j\in\mu(i)}p^c_j
 \qquad
-p_i=I_ia^r_i+v_i\times^{*}I_iv_i-f^x_i\tag{9.23}
+p_i=I_ia^r_i+v_i\times^{*}I_iv_i-f^x_i\tag{9.22, 9.23}
 $$
 
 **$i=0$ 时式 9.20 可以直接解出 $a_0$**：

@@ -240,9 +240,9 @@ v_i=v_{\lambda(i)}+v_{Ji}\qquad(v_0=0)
 $$
 
 ```
-v₀ = 0
+v_0 = 0
 for i = 1 to N_B do
-    v_i = v_λ(i) + vJ_i
+    v_i = v_lam(i) + vJ_i
 end
 ```
 
@@ -337,9 +337,9 @@ $$
 ```
 for i = 1 to N_B do
     X_J = jcalc(jtype(i), q_i)
-    ⁱX_λ(i) = X_J · X_T(i)
-    if λ(i) ≠ 0 then
-        ⁱX_0 = ⁱX_λ(i) · λ⁽ⁱ⁾X_0
+    X[i,lam(i)] = X_J * X_T(i)
+    if lam(i) != 0 then
+        X[i,0] = X[i,lam(i)] * X[lam(i),0]
     end
 end
 ```
