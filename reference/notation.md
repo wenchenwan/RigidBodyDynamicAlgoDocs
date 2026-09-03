@@ -74,7 +74,7 @@
 | $n_i$ | 关节 $i$ 的自由度（$n_f$ 通用记法） |
 | $n_c$ | 约束总数 |
 | $d$ | **树深度** |
-| $d_k$ | body $k$ 的深度 $=|\kappa(k)|$ |
+| $d_k$ | body $k$ 的深度 $=\lvert\kappa(k)\rvert$ |
 | $\lambda(i)$ | **父数组**（parent），$\lambda(i)=\min(p(i),s(i))$ |
 | $\mu(i)$ | **子集合**（children） |
 | $\nu(i)$ | **子树集**（subtree，含 $i$） |

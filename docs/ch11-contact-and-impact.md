@@ -329,8 +329,12 @@ t^{\mathsf T}=\frac{\partial\phi}{\partial q}\tag{11.38, 11.39, 11.40}
 $$
 
 > 🔑 **对照式 11.28、11.29 可见**：
-> $$\zeta_i\leftrightarrow\dot\phi_i,\qquad \dot\zeta_i\leftrightarrow\ddot\phi_i,
-> \qquad t_i\leftrightarrow\left(\frac{\partial\phi_i}{\partial q}\right)^{\mathsf T}$$
+>
+> $$
+> \zeta_i\leftrightarrow\dot\phi_i,\qquad \dot\zeta_i\leftrightarrow\ddot\phi_i,
+> \qquad t_i\leftrightarrow\left(\frac{\partial\phi_i}{\partial q}\right)^{\mathsf T}
+> $$
+>
 > **接触法向在关节空间中就是约束函数的梯度。**
 
 ---
