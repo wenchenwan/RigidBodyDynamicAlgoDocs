@@ -23,7 +23,7 @@
 
 ## 二、仓库结构
 
-```
+```text
 .
 ├── README.md                     # 本文件：导航 + 阅读进度
 ├── CONVENTIONS.md                # 笔记撰写与更新约定
@@ -52,6 +52,7 @@
 │   ├── model.py                  # 示例机构
 │   ├── algorithms.py             # RNEA / CRBA / ABA / LTL / LTDL
 │   ├── cost_model.py             # 第 10 章表 10.1 的代价公式与交叉点分析
+│   ├── lint_docs.py              # Markdown 渲染规则自检（多 \tag、非 ASCII 伪代码、失效链接）
 │   ├── verify_all.py             # 跨章节一致性套件
 │   ├── verify_ch02.py            # 第 2 章（含 PDF 中三处批注的困惑点）
 │   ├── verify_ch03.py            # 第 3 章
@@ -115,6 +116,7 @@ python3 code/verify_ch03.py       # 第 3 章
 python3 code/verify_ch04.py       # 第 4 章
 python3 code/verify_crba_2link.py # 第 6 章 2R 算例
 python3 code/cost_model.py        # 第 10 章代价与交叉点分析
+python3 code/lint_docs.py         # Markdown 渲染规则自检（无输出即通过）
 ```
 
 **笔记中所有数值断言都出自这些脚本。** 详见 [`code/README.md`](code/README.md)。
@@ -123,7 +125,7 @@ python3 code/cost_model.py        # 第 10 章代价与交叉点分析
 
 | 对拍 | 检出什么 |
 |---|---|
-| `rnea(q, q̇, aba(q, q̇, τ)) == τ` | ABA 或 RNEA 的任何错误（两算法完全独立） |
+| `rnea(q, qd, aba(q, qd, tau)) == tau` | ABA 或 RNEA 的任何错误（两算法完全独立） |
 | `crba(q) == H_via_energy(q)` | $H$ 下标条件写反（这条完全不碰 $I^c$ / $X^*$） |
 | 能量守恒 | 积分器与整体自洽性 |
 
@@ -148,6 +150,7 @@ python3 code/cost_model.py        # 第 10 章代价与交叉点分析
   公式编号、伪代码（表 5.1、6.1、6.2、6.3、7.1、8.2、8.3、9.1、9.2、9.3、11.1 等）
   均取自原书。
 - **公式与算法有数值验证**：见第五节。
+- **Markdown 渲染规则有自动检查**：`python3 code/lint_docs.py`（一个公式块一个 `\tag`、伪代码纯 ASCII 等，见 `CONVENTIONS.md`）。
 - **引用原书原文的地方用引用块标出**，其余为笔记作者的整理、解释与补充。
 - 标有 💡 的是笔记补充的解释或实践建议，标有 🔑 的是原书中特别关键的论断。
 
@@ -162,6 +165,7 @@ python3 code/cost_model.py        # 第 10 章代价与交叉点分析
 | 齿轮"在对角元加 $\rho^2I_{rotor}$" | 原书把转子建模成**独立刚体**，用 §8.11 的闭环函数技术 |
 | 遗漏 §5.1、§5.2、§9.7、§10.2 等整节 | 已补 |
 | 第 10 章代价表标〔待填〕 | 已按**表 10.1** 填入，交叉点精确到 $n\le8$ / $n\ge9$ |
+| 一个公式块里放多个 `\tag`、伪代码里用 Unicode 上下标 | GitHub 会把整块渲染成红字 / 把并排两栏推歪；已全部改写，规则写入 [`CONVENTIONS.md`](CONVENTIONS.md) §2、§4，`code/lint_docs.py` 自动检查 |
 
 ---
 

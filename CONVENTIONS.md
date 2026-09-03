@@ -29,10 +29,13 @@
 
 ## 2. 数学记号
 
-- 行内公式用 `$...$`，独立公式用 `$$...$$`（GitHub 原生支持 LaTeX 渲染）。
-- 空间向量（6D）用小写粗体：$\mathbf{v}, \mathbf{a}, \mathbf{f}$
-- 3D 向量用小写：$\omega, v_O, n_O$
-- 矩阵/算子用大写：$I, X, S, H$
+- 行内公式用 `$...$`，独立公式用 `$$...$$`：两个 `$$` 各占一行，块内不留空行
+  （GitHub 原生支持 LaTeX 渲染）。
+- 空间向量（6D）按原书写法**不加粗**：$v, a, f, p$；只有当它与同名的 3D 向量出现在同一段落时
+  （主要是第 2 章）才戴帽子区分：$\hat v=[\omega;\ v_O]$、$\hat f=[n_O;\ f]$。
+- 3D 向量用小写：$\omega, v_O, n_O$；单位矩阵写 $\mathbf 1$。
+- 矩阵/算子用大写：$I, X, S, H$；复合刚体惯性 $I^c$，铰接体惯性 $I^A$，消元后的 $I^a$。
+- 转置写 $^{\mathsf T}$；树拓扑：父节点 $\lambda(i)$、子节点集 $\mu(i)$、子树 $\nu(i)$、祖先集 $\kappa(i)$。
 - 力空间的量统一带上标 `*`：$X^*,\ \times^*$
 - 严格区分 $M^6$（运动空间）与 $F^6$（力空间）的量，不混用记号。
 
@@ -61,7 +64,7 @@ $$
 **中文为主 + 英文术语**：术语首次出现时写成 `中文 (English)`，之后可只用中文或只用英文，
 但同一文件内保持一致。例：
 
-> 空间速度 (spatial velocity) 是一个 6D 向量……后文中空间速度都记作 $\mathbf{v}$。
+> 空间速度 (spatial velocity) 是一个 6D 向量……后文中空间速度都记作 $v$（与 3D 向量并存时记作 $\hat v$）。
 
 术语对照表见 [`reference/glossary.md`](reference/glossary.md)，新术语随读随加。
 
@@ -93,7 +96,17 @@ Courier New 等常用等宽字体里，渲染时会逐字回退到别的字体�
 | 乘号 $\cdot$ | `*` | 与 `^*` 区分开 |
 
 分隔线用 `---`，不用 `─`（东亚宽度不确定，会把并排两栏推歪）。
-注释用 `<-` 而不是 `←`。示意图（树状图、目录树）不受此约束。
+注释用 `<-` 而不是 `←`。示意图（树状图、目录树）不受此约束，
+但请把示意图的围栏语言标成 `text`（即 ```` ```text ````），检查器对 `text` 与 `mermaid` 围栏不做 ASCII 检查。
+
+### 提交前自检
+
+```bash
+python3 code/lint_docs.py      # 渲染规则：多 \tag、行内 \tag、空公式块、代码块非 ASCII、表格里的裸 |、失效链接
+python3 code/verify_all.py     # 公式与算法的数值验证
+```
+
+`lint_docs.py` 无输出且退出码为 0 即通过。
 
 ## 5. Commit 规范
 
@@ -109,14 +122,14 @@ Courier New 等常用等宽字体里，渲染时会逐字回退到别的字体�
 | `refactor` | 调整结构、拆分合并文件、改链接 |
 | `chore` | 更新进度表、模板、杂项 |
 
-**改了公式先跑验证**：`python3 code/verify_all.py`（以及相应的 `verify_chXX.py`）。
+**改了公式先跑验证**：`python3 code/verify_all.py`（以及相应的 `verify_chXX.py`）；**改了 Markdown 先跑** `python3 code/lint_docs.py`。
 
 `scope` 用章节号或文件名，例：
 
 ```
 docs(ch02): 补充 Plücker 坐标基向量的几何解释
 fix(ch07): 修正 ABA 第二趟中 p^a 的表达式，原笔记漏了 I^a c_i 项
-chore: 更新 README 阅读进度至 3/10
+chore: 更新 README 阅读进度至第 3 章
 ```
 
 ## 6. 持续更新流程
@@ -126,7 +139,7 @@ chore: 更新 README 阅读进度至 3/10
 1. 在对应 `docs/chXX-*.md` 里填「我的理解 / 疑问 / 与原文的出入」；
 2. 修正预填框架中与原书不符的内容；
 3. 新术语补进 `reference/glossary.md`，新符号补进 `reference/notation.md`；
-4. 更新 `README.md` 进度表里的状态和「当前进度：X / 10」；
+4. 更新 `README.md` 进度表里的状态和「当前进度」一行；
 5. commit + push。
 
 一次 commit 只做一件事，方便以后回看某个概念是什么时候想通的。
