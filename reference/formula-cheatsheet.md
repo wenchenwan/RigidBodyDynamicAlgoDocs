@@ -6,9 +6,9 @@
 ## 1. 基本对象
 
 $$
-\mathbf{v}=\begin{bmatrix}\omega\\ v_O\end{bmatrix}\in M^6,
+\hat v=\begin{bmatrix}\omega\\ v_O\end{bmatrix}\in M^6,
 \qquad
-\mathbf{f}=\begin{bmatrix}n_O\\ f\end{bmatrix}\in F^6
+\hat f=\begin{bmatrix}n_O\\ f\end{bmatrix}\in F^6
 $$
 
 ⚠️ 注意排列：速度是 **(角, 线)**，力是 **(矩, 力)**。
@@ -16,10 +16,10 @@ $$
 **功率（唯一的天然配对）**：
 
 $$
-P=\mathbf{f}^{\mathsf T}\mathbf{v}=n_O\cdot\omega+f\cdot v_O
+P=\hat f^{\mathsf T}\hat v=n_O\cdot\omega+f\cdot v_O
 $$
 
-**动能**：$\;T=\tfrac12\,\mathbf{v}^{\mathsf T}I\,\mathbf{v}\;$，
+**动能**：$\;T=\tfrac12\,\hat v^{\mathsf T}I\,\hat v\;$，
 系统层面 $\;T=\tfrac12\dot q^{\mathsf T}H\dot q$
 
 ## 2. 坐标变换
@@ -51,27 +51,27 @@ $$
 ## 3. 叉乘
 
 $$
-\mathbf{v}\times=\begin{bmatrix}\omega\times & 0\\ v_O\times & \omega\times\end{bmatrix}
+\hat v\times=\begin{bmatrix}\omega\times & 0\\ v_O\times & \omega\times\end{bmatrix}
 \qquad
-\mathbf{v}\times^{*}=\begin{bmatrix}\omega\times & v_O\times\\ 0 & \omega\times\end{bmatrix}
+\hat v\times^{*}=\begin{bmatrix}\omega\times & v_O\times\\ 0 & \omega\times\end{bmatrix}
 $$
 
 $$
-\boxed{\mathbf{v}\times^{*}=-\left(\mathbf{v}\times\right)^{\mathsf T}}
+\boxed{\hat v\times^{*}=-\left(\hat v\times\right)^{\mathsf T}}
 \qquad
-\mathbf{v}\times\mathbf{v}=0
+\hat v\times\hat v=0
 \qquad
-X(\mathbf{v}\times)X^{-1}=(X\mathbf{v})\times
+X(\hat v\times)X^{-1}=(X\hat v)\times
 $$
 
-## 4. 求导（坐标系以 $\mathbf{v}$ 运动）
+## 4. 求导（坐标系以 $\hat v$ 运动）
 
 $$
-\frac{d\mathbf{m}}{dt}=\frac{\mathring{d}\mathbf{m}}{dt}+\mathbf{v}\times\mathbf{m}
-\quad(\mathbf{m}\in M^6)
+\frac{d\hat m}{dt}=\frac{\mathring{d}\hat m}{dt}+\hat v\times\hat m
+\quad(\hat m\in M^6)
 \qquad
-\frac{d\mathbf{g}}{dt}=\frac{\mathring{d}\mathbf{g}}{dt}+\mathbf{v}\times^{*}\mathbf{g}
-\quad(\mathbf{g}\in F^6)
+\frac{d\hat g}{dt}=\frac{\mathring{d}\hat g}{dt}+\hat v\times^{*}\hat g
+\quad(\hat g\in F^6)
 $$
 
 （$\mathring d$ = 表观导数，把基当常量）
@@ -79,9 +79,9 @@ $$
 ## 5. 速度与加速度的合成
 
 $$
-\mathbf{v}_2=\mathbf{v}_1+\mathbf{v}_{\text{rel}}
+\hat v_2=\hat v_1+\hat v_{\text{rel}}
 \qquad
-\boxed{\mathbf{a}_2=\mathbf{a}_1+\mathbf{a}_{\text{rel}}+\mathbf{v}_1\times\mathbf{v}_{\text{rel}}}
+\boxed{\hat a_2=\hat a_1+\hat a_{\text{rel}}+\hat v_1\times\hat v_{\text{rel}}}
 $$
 
 ⚠️ **没有系数 2**，没有单独的离心项和科氏项——它们被空间加速度的定义吸收了。
@@ -89,7 +89,7 @@ $$
 **空间加速度 ↔ 经典加速度**：
 
 $$
-a_{P}^{\text{classical}}=\underbrace{\dot v_O}_{\mathbf{a}\text{ 的线分量}}+\ \omega\times v_O
+a_{P}^{\text{classical}}=\underbrace{\dot v_O}_{\hat a\text{ 的线分量}}+\ \omega\times v_O
 $$
 
 ## 6. 空间惯性
@@ -105,16 +105,16 @@ $$
 
 **性质**：对称、正定、**可加**（同坐标系下 $I=I_1+I_2$）、只有 10 个独立参数。
 
-**动量**：$\;\mathbf{h}=I\mathbf{v}$
+**动量**：$\;\hat h=I\hat v$
 
 ## 7. 单刚体运动方程
 
 $$
-\boxed{\ \mathbf{f}=I\,\mathbf{a}+\mathbf{v}\times^{*}I\,\mathbf{v}\ }
+\boxed{\ \hat f=I\,\hat a+\hat v\times^{*}I\,\hat v\ }
 $$
 
-等价：$\;\dot I=\mathbf{v}\times^{*}I-I\,\mathbf{v}\times\;$，
-$\;\mathbf{f}=\frac{d}{dt}(I\mathbf{v})=I\mathbf{a}+\dot I\mathbf{v}$
+等价：$\;\dot I=\hat v\times^{*}I-I\,\hat v\times\;$，
+$\;\hat f=\frac{d}{dt}(I\hat v)=I\hat a+\dot I\hat v$
 
 ## 8. 系统运动方程
 
@@ -128,9 +128,9 @@ $$
 **关节约束**：
 
 $$
-\mathbf{v}_{\text{rel}}=S_i\dot q_i,
+v_{\text{rel}}=S_i\dot q_i,
 \qquad S_i^{\mathsf T}T_i=0,
-\qquad \boxed{\tau_i=S_i^{\mathsf T}\mathbf{f}_i}
+\qquad \boxed{\tau_i=S_i^{\mathsf T}f_i}
 $$
 
 **闭环**：$H\ddot q+C=\tau+K^{\mathsf T}\lambda$，$K\ddot q=k$
@@ -261,8 +261,8 @@ $$
 - [ ] 这个量属于 $M^6$ 还是 $F^6$？→ 决定用 $X$ 还是 $X^*$、用 $\times$ 还是 $\times^*$
 - [ ] 两个要相加的空间向量在**同一个坐标系**里吗？
 - [ ] 分量排列是 (角, 线) 吗？
-- [ ] 加速度合成项是 $\mathbf{v}_i\times\mathbf{v}_J$，且**没有 2**？
-- [ ] 重力用的是 $\mathbf{a}_0=-\mathbf{a}_g$（负号）？
+- [ ] 加速度合成项是 $v_i\times v_J$，且**没有 2**？
+- [ ] 重力用的是 $a_0=-a_g$（负号）？
 - [ ] $H_{ij}$ 的下标：**$i$ 后代、$j$ 祖先、$I^c$ 取后代**（记忆锚点：式 6.16 的 $\max$）？
 - [ ] ABA 的 $p^a$ 里用的是 $I^a$ 不是 $I^A$？
 - [ ] 闭环：没忘 $\tau^a$？鞍点矩阵没用 Cholesky？

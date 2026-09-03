@@ -23,35 +23,35 @@
 
 ## 第 2 章 空间向量代数
 
-- [ ] 🔴 手推空间惯性矩阵 $I_O$ 的两行，验证与书上一致
-- [ ] 🔴 手推 $X^{*}=X^{-\mathsf T}$
-- [ ] 🔴 用具体数值验证：空间加速度线分量 $+\ \omega\times v_O$ = 经典加速度
+- [x] 🟢 ~~手推空间惯性矩阵 $I_O$ 的两行，验证与书上一致~~ —— 见 [`derivations.md` D2](derivations.md#d2)
+- [x] 🟢 ~~手推 $X^{*}=X^{-\mathsf T}$~~ —— 见 [`derivations.md` D1](derivations.md#d1)（连带 $\hat v\times^{*}=-(\hat v\times)^{\mathsf T}$）
+- [x] 🟢 ~~用具体数值验证：空间加速度线分量 $+\ \omega\times v_O$ = 经典加速度~~ —— `code/verify_ch02.py` §2.11（匀速转动：空间加速度为零，$P$ 点经典加速度 $=-\omega^2r$）；推导见 [`derivations.md` D4](derivations.md#d4)
 
 ## 第 3 章 刚体系统动力学
 
-- [ ] 🔴 确认本书 $C$ 的定义是否包含外力（本笔记按"包含重力和外力"处理）
-- [ ] 🔴 对几种常见关节写出具体的 $T$，验证 $S^{\mathsf T}T=0$
+- [x] 🟢 ~~确认本书 $C$ 的定义是否包含外力~~ —— **包含**。原书 §3.1：$C$ 涵盖科氏力、离心力、重力，以及 $\tau$ 之外作用于系统的**任何其他力**（见 ch03 §3.1 的引文）
+- [x] 🟢 ~~对几种常见关节写出具体的 $T$，验证 $S^{\mathsf T}T=0$~~ —— `code/verify_ch03.py` §3.3、§3.7（式 3.35、3.36 逐关节核对）
 
 ## 第 4 章 建模
 
-- [ ] 🔴 用 2-连杆平面机械臂手写完整 `model`，与 `spatial_v2` 示例对照
+- [ ] 🟡 用 2-连杆平面机械臂手写完整 `model`，与 `spatial_v2` 示例对照 —— 已按表 4.3 写成 `code/model.py` 的 `arm2r()`；与 `spatial_v2` 对照待做
 - [ ] 🔴 搞清 URDF → model 转换中惯性参数的坐标系变换
 
 ## 第 5 章 RNEA
 
-- [ ] 🔴 实现 RNEA，用 2-连杆平面机械臂的解析解验证
-- [ ] 🔴 分别用"逐体加重力"和"改 $\mathbf{a}_0$"两种写法，确认结果一致
+- [x] 🟢 ~~实现 RNEA，用 2-连杆平面机械臂的解析解验证~~ —— `code/algorithms.py` 的 `rnea`；`verify_crba_2link.py` 用解析 $H$ 核对，`verify_all.py` 用 ABA 互验
+- [x] 🟢 ~~分别用"逐体加重力"和"改 $a_0$"两种写法，确认结果一致~~ —— `verify_all.py`「重力技巧 ≡ 逐体施加重力外力」
 
 ## 第 6 章 CRBA
 
-- [ ] 🔴 实现 CRBA，与 $n$ 次 RNEA 的结果逐元素对比
-- [ ] 🔴 搞清 $LTL$ 与 $LTDL$ 的区别与各自适用场景
+- [x] 🟢 ~~实现 CRBA，与 $n$ 次 RNEA 的结果逐元素对比~~ —— `verify_all.py`「CRBA vs n×RNEA」，另有 $\sum J^{\mathsf T}IJ$ 与 $\partial^2T/\partial\dot q^2$ 两种独立构造
+- [ ] 🟡 搞清 $LTL$ 与 $LTDL$ 的区别与各自适用场景 —— 两者都已实现并验证（`verify_all.py` 第 6 章稀疏分解一节）；区别见 ch06 §6.5（$LTDL$ 的 $L$ 是单位下三角、不开方）；「什么时候选哪个」待实测
 
 ## 第 7 章 ABA
 
-- [ ] 🔴 实现 ABA，与 RNEA 互验
-- [ ] 🔴 自己推导 $I^a$、$\mathbf{p}^a$ 的递推关系（写进 `derivations.md`）
-- [ ] 🔴 手工从 $H$ 出发做一次消元，验证 ABA = 树上的高斯消元这个解释
+- [x] 🟢 ~~实现 ABA，与 RNEA 互验~~ —— `verify_all.py` 第 7 章一节：ABA ↔ RNEA、ABA vs $H^{-1}(\tau-C)$、静止+重力补偿
+- [x] 🟢 ~~自己推导 $I^a$、$p^a$ 的递推关系~~ —— 见 [`derivations.md` D5](derivations.md#d5)
+- [ ] 🟡 手工从 $H$ 出发做一次消元，验证 ABA = 树上的高斯消元 —— D5 已写出单个关节的 Schur 补形式；整棵树的手工消元待做（对照 ch07 §7.4）
 
 ## 第 8 章 闭环
 
@@ -136,7 +136,7 @@ $G$ 与 $GQ$ 给出同一个 $I$（Cholesky 和特征分解各给一组，完全
 
 **问题**：为什么力向量的坐标变换是 $X^*$ 而不是 $X$？
 
-**答案**：因为功率 $\mathbf{f}^{\mathsf T}\mathbf{v}$ 是物理量，
+**答案**：因为功率 $\hat f^{\mathsf T}\hat v$ 是物理量，
 必须在坐标变换下不变。代入得 $X^{*\mathsf T}X=\mathbf{1}$，即 $X^*=X^{-\mathsf T}$。
 本质是 $F^6$ 是 $M^6$ 的对偶空间，对偶空间上的诱导变换就是逆转置。
 （第 2 章 §2.5）

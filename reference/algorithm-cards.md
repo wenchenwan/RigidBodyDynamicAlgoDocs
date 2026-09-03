@@ -17,7 +17,7 @@
 | **浮动基 ID** | 浮动基逆动力学 | $q,\dot q,\ddot q$ | $\tau,a_0$ | 3 | $O(n)$ | 表 9.6 | [第 9 章](../docs/ch09-hybrid-dynamics.md) |
 | **接触仿真** | 含接触的仿真 | — | — | — | — | 表 11.1 | [第 11 章](../docs/ch11-contact-and-impact.md) |
 
-**通用子程序**：`[X_J, S, c_J] = jcalc(jtype, q, q̇)`，$\mathbf{v}_J = S\dot q$
+**通用子程序**：`[X_J, S, c_J] = jcalc(jtype, q, qd)`，$v_J = S\dot q$
 
 ---
 
@@ -124,7 +124,7 @@ for i = N_B to 1:
     u_i = tau_i - S_i^T*p^A_i
     if lam(i) != 0:
         I^a = I^A_i - U_i*D_i^-1*U_i^T            # Schur 补
-        p^a = p^A_i + I^a*c_i + U_i*D_i^-1*u_i    # ⚠️ 用 I^a 不是 I^A
+        p^a = p^A_i + I^a*c_i + U_i*D_i^-1*u_i    # NOTE: 用 I^a 不是 I^A
         I^A_lam(i) += X[lam(i),i]^* I^a*X[i,lam(i)]
         p^A_lam(i) += X[lam(i),i]^* p^a
 
@@ -137,7 +137,7 @@ for i = 1 to N_B:
 ------------------------------------------------------------
 ```
 
-⚠️ 趟 1 算的 $\mathbf{c}_i$、趟 2 算的 $U_i,D_i,u_i$ 都要**存下来**给趟 3 用。
+⚠️ 趟 1 算的 $c_i$、趟 2 算的 $U_i,D_i,u_i$ 都要**存下来**给趟 3 用。
 
 ---
 
@@ -339,10 +339,10 @@ $$
 - [ ] 变换顺序是 ${}^{i}X_{\lambda(i)} = X_J\,X_T$，没写反
 - [ ] $I_i$ 存在 body $i$ 自己的坐标系里（因此是常量）
 - [ ] 力向量用 $X^*$ 和 $\times^*$，运动向量用 $X$ 和 $\times$
-- [ ] 加速度交叉项是 $\mathbf{v}_i\times\mathbf{v}_J$，**没有系数 2**
-- [ ] 重力是 $\mathbf{a}_0=-\mathbf{a}_g$（**负号**）
+- [ ] 加速度交叉项是 $v_i\times v_J$，**没有系数 2**
+- [ ] 重力是 $a_0=-a_g$（**负号**）
 - [ ] 内推时力是**累加** `+=`，不是赋值 `=`（分支节点会丢数据）
-- [ ] ABA 的 $\mathbf{p}^a$ 里有 $I^{a}\mathbf{c}_i$ 项，且用的是 $I^a$ 不是 $I^A$
+- [ ] ABA 的 $p^a$ 里有 $I^{a}c_i$ 项，且用的是 $I^a$ 不是 $I^A$
 - [ ] CRBA 填了对称的另一半 `H_ji = H_ij'`
 - [ ] FD 解的是 $H\ddot q = \tau - C$，没漏掉 $C$
 - [ ] 非对称关节的极性正确（必要时用表 4.2 的极性反转）
@@ -357,7 +357,7 @@ $$
 - [ ] **CRBA ↔ $n$ 次 RNEA**：两种方式算的 $H$ 逐元素相等
 - [ ] $\|H - H^{\mathsf T}\|$ 在机器精度量级
 - [ ] $H$ 能通过 Cholesky（正定）
-- [ ] 自由落体：单刚体 + 自由关节 + $\tau=0$ ⟹ $\mathbf{a}=\mathbf{a}_g$
+- [ ] 自由落体：单刚体 + 自由关节 + $\tau=0$ ⟹ $a=a_g$
 - [ ] 静止：$\dot q=0$、$\tau=g(q)$ ⟹ $\ddot q=0$
 - [ ] 能量守恒：无驱动无耗散时总能量漂移缓慢且有界
 - [ ] 结构性零：随机 $q$ 下，非祖先后代关系的 $H_{ij}$ 恒为 0
